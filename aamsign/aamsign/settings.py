@@ -158,8 +158,13 @@ RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["www.a-amedia.com", "a-amedia.com", "localhost", "127.0.0.1"]
-
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://a-amedia.com",
+    "https://www.a-amedia.com"
+]
+# 建议（生产 HTTPS）
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Aamsign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 100px auto;
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #007600;
+            margin-bottom: 20px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: #0071e3;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">Aamsign</a>
+        </div>
+    </nav>
+
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your order. We have received your payment and will process your order shortly.</p>
+        <a href="{% url 'index' %}" class="btn-home">Return to Home</a>
+    </div>
+</body>
+
+</html>

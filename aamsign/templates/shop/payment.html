@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Aamsign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .payment-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .order-total {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin: 20px 0;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-pay:hover {
+            background: #0077ed;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            color: #6e6e73;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">Aamsign</a>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <div class="payment-card">
+            <div class="payment-header">
+                <h1>Secure Payment</h1>
+                <p>Complete your purchase securely with Stripe</p>
+                <div class="order-total">${{ order.total_amount }}</div>
+            </div>
+
+            <button id="submit" class="btn-pay">Pay ${{ order.total_amount }}</button>
+
+            <div class="secure-badge">
+                🔒 256-bit SSL Secure Payment
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var btn = document.getElementById('submit');
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            fetch("{% url 'shop:create_checkout_session' %}", {
+                method: 'GET',
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    if (session.error) {
+                        alert(session.error);
+                    } else {
+                        window.location.href = session.url;
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>

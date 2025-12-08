@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Aamsign - Premium Channel Letters & Neon Signs{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">
+                <img src="{% static 'images/general/icons/logo.png' %}" alt="Aamsign Logo">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="{% url 'design' %}" style="color: #2997ff; font-weight: 600;">Free Design</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Channel Letters</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-category">
+                            <h4>Illumination Types</h4>
+                            <ul>
+                                <li><a href="{% url 'front_lit' %}">Front-Lit Channel Letters</a></li>
+                                <li><a href="{% url 'back_lit' %}">Back-Lit / Halo-Lit</a></li>
+                                <li><a href="{% url 'front_back_lit' %}">Front + Back-Lit</a></li>
+                                <li><a href="{% url 'open_face' %}">Open-Face / Marquee</a></li>
+                                <li><a href="{% url 'non_illuminated' %}">Non-Illuminated 3D</a></li>
+                                <li><a href="{% url 'rgb_programmable' %}">RGB / Programmable</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">LED Neon Signs</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-category">
+                            <h4>Neon Collections</h4>
+                            <ul>
+                                <li><a href="{% url 'custom_neon' %}">Custom Neon Words & Logos</a></li>
+                                <li><a href="{% url 'neon_lamps' %}">Desk & Counter Neon Lamps</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Light Boxes</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-category">
+                            <h4>Display Solutions</h4>
+                            <ul>
+                                <li><a href="{% url 'slim_lightboxes' %}">Slim LED Light Boxes</a></li>
+                                <li><a href="{% url 'blade_lightboxes' %}">Double-Sided Blade</a></li>
+                                <li><a href="{% url 'fabric_lightboxes' %}">Fabric SEG Light Boxes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Logo Signs</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-category">
+                            <h4>Corporate Identity</h4>
+                            <ul>
+                                <li><a href="{% url 'logo_signs' %}">Metal / Acrylic Logos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <a href="{% url 'shop:cart_detail' %}"
+                    style="padding: 8px 16px; background: #f5f5f7; border-radius: 20px; margin-right: 10px;">
+                    🛒 Cart
+                </a>
+                <a href="{% url 'quote' %}"
+                    style="padding: 8px 20px; background: #2997ff; color: white; border-radius: 20px; font-weight: 600;">
+                    GET FREE QUOTE
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Shop and Learn</h4>
+                <ul>
+                    <li><a href="#">Store</a></li>
+                    <li><a href="#">Mac</a></li>
+                    <li><a href="#">iPad</a></li>
+                    <li><a href="#">iPhone</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Account</h4>
+                <ul>
+                    <li><a href="#">Manage Your ID</a></li>
+                    <li><a href="#">Store Account</a></li>
+                    <li><a href="#">iCloud.com</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Aamsign Store</h4>
+                <ul>
+                    <li><a href="#">Find a Store</a></li>
+                    <li><a href="#">Genius Bar</a></li>
+                    <li><a href="#">Today at Apple</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>About Aamsign</h4>
+                <ul>
+                    <li><a href="#">Newsroom</a></li>
+                    <li><a href="#">Career</a></li>
+                    <li><a href="#">Investors</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright © 2024 Aamsign Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get A Quote - VINTAGESIGN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 全局重置与基础样式 --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- 顶部通栏 (Top Bar) --- */
+        .top-bar {
+            background-color: #f7941d; /* 品牌橙色 */
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- 导航栏 (Header) --- */
+        header {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: #f7941d; }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .nav-menu a:hover { color: #f7941d; }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* 移动端隐藏菜单 */
+        @media (max-width: 900px) {
+            .nav-menu { display: none; }
+        }
+
+        /* --- 主内容区 (Main Content) --- */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        /* 左侧：图片展示 */
+        .sidebar-image {
+            flex: 1;
+            position: sticky;
+            top: 100px;
+        }
+        .sidebar-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* 右侧：表单区域 */
+        .form-container {
+            flex: 1.2;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: #222;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .form-subtitle a { color: #f7941d; font-weight: bold; }
+
+        /* 表单字段 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            color: #444;
+        }
+        .form-group label span { color: red; }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border 0.3s;
+            background: #fdfdfd;
+        }
+        .form-control:focus {
+            border-color: #f7941d;
+            outline: none;
+            background: white;
+        }
+
+        /* Sign Types 网格选择 */
+        .sign-types-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .sign-type-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .sign-type-card:hover {
+            border-color: #f7941d;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        /* 模拟选中状态 */
+        .sign-type-card.selected {
+            border: 2px solid #f7941d;
+            background-color: #fffaf0;
+        }
+
+        .sign-type-img {
+            width: 100%;
+            height: 80px;
+            background-color: #f0f0f0;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 24px;
+        }
+        /* 这里使用背景图占位，实际应替换为具体图片 */
+        .sign-type-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px;}
+
+        .sign-type-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* 文件上传 */
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #fafafa;
+            transition: border 0.3s;
+        }
+        .file-upload:hover { border-color: #f7941d; }
+        .file-upload i { font-size: 30px; color: #ccc; margin-bottom: 10px; }
+        .file-info { font-size: 12px; color: #999; margin-top: 5px; }
+
+        /* 提交按钮 */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #f7941d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover { background-color: #d67d12; }
+
+        /* --- Newsletter Section --- */
+        .newsletter-section {
+            background-color: #222;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+        .newsletter-form button {
+            padding: 10px 20px;
+            background: #f7941d;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #1a1a1a;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 13px;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a:hover { color: white; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .sidebar-image { position: static; }
+            .sign-types-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Black Friday Add to Cart Apply 20% OFF
+    </div>
+
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <i class="fa-regular fa-circle-check"></i> VINTAGE SIGN
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="#">Neon Signs</a>
+                <a href="#">LED Marquee</a>
+                <a href="#">House Numbers</a>
+                <a href="#">Metal Letters</a>
+                <a href="#">Projecting Signs</a>
+                <a href="#" style="color: #f7941d;">Get A Quote</a>
+            </nav>
+
+            <div class="header-icons">
+                <a href="#"><i class="fa fa-search"></i></a>
+                <a href="#"><i class="fa fa-user"></i></a>
+                <a href="#"><i class="fa fa-shopping-cart"></i> (0)</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="sidebar-image">
+            <img src="https://images.unsplash.com/photo-1563245372-f21720132c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Neon Sign Showcase">
+        </div>
+
+        <div class="form-container">
+            <h1 class="form-title">Get a Free Quote and Mockup!</h1>
+            <p class="form-subtitle">
+                Don't want to submit the form? You can send the quote directly via Mail. 
+                <a href="mailto:Support@vintagesign.cn">Support@vintagesign.cn</a>
+            </p>
+
+            <form>
+                <div class="form-group">
+                    <label>Name <span>*</span></label>
+                    <input type="text" class="form-control" placeholder="Your Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span>*</span></label>
+                    <input type="email" class="form-control" placeholder="Your Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone <span>*</span></label>
+                    <input type="tel" class="form-control" placeholder="Your Phone Number" required>
+                </div>
+
+                <div class="form-group">
+                    <label>My sign will be</label>
+                    <select class="form-control">
+                        <option>Please select</option>
+                        <option>Indoor used</option>
+                        <option>Outdoor used</option>
+                        <option>Outdoor used and near the sea</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Sign Size</label>
+                    <input type="text" class="form-control" placeholder="e.g. 50cm width">
+                </div>
+
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" class="form-control" placeholder="Your Country">
+                </div>
+
+                <div class="form-group">
+                    <label>SIGN TYPES <span>*</span></label>
+                    <div class="sign-types-grid">
+                        <div class="sign-type-card selected" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-lightbulb"></i></div>
+                            <div class="sign-type-name">Backlit Signs</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-sun"></i></div>
+                            <div class="sign-type-name">Frontlit Signs</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-arrows-left-right-to-line"></i></div>
+                            <div class="sign-type-name">Front & Back Lit</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-box-open"></i></div>
+                            <div class="sign-type-name">Sign Trays</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-square"></i></div>
+                            <div class="sign-type-name">Lighting boxes</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-star"></i></div>
+                            <div class="sign-type-name">Marquee Letter</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-font"></i></div>
+                            <div class="sign-type-name">2D Metal Letters</div>
+                        </div>
+                        <div class="sign-type-card" onclick="selectCard(this)">
+                            <div class="sign-type-img"><i class="fa fa-bolt"></i></div>
+                            <div class="sign-type-name">LED Neon Signs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload An Image <span>*</span></label>
+                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                        <i class="fa fa-cloud-upload-alt"></i>
+                        <div>Select the file or drag it here</div>
+                        <div class="file-info">Max size: 30 MB | Types: jpg, png, pdf, ai, eps...</div>
+                        <input type="file" id="fileInput" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Details</label>
+                    <textarea class="form-control" rows="4" placeholder="Tell us more about your requirements..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Quote</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="newsletter-section">
+        <h3>Subscribe to our newsletter</h3>
+        <p>A short sentence describing what someone will receive by subscribing</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Your email">
+            <button type="submit">Subscribe</button>
+        </form>
+        <small style="opacity: 0.6;">100% free, Unsubscribe any time!</small>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>VINTAGE SIGN</h4>
+                <p style="line-height:1.8;">Create the neon world with love.<br>No fear of darkness, light up every corner.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#">Shop All</a></li>
+                    <li><a href="#">Custom Neon Sign</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">Fonts/Product Guide</a></li>
+                    <li><a href="#">Style Guide</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fa fa-envelope"></i> support@vintagesign.cn</p>
+                <p><i class="fa fa-phone"></i> 86-755-28508107</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2023 VINTAGE SIGN. Powered by Shopify</div>
+            <div style="font-size: 20px;">
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的 JS 用于切换 Sign Types 的选中状态
+        function selectCard(element) {
+            // 移除其他卡片的 selected 类
+            // 如果是单选逻辑：
+            // document.querySelectorAll('.sign-type-card').forEach(el => el.classList.remove('selected'));
+            
+            // 如果是多选逻辑（通常询价可能是单选或多选，这里模拟点击切换样式）：
+            element.classList.toggle('selected');
+        }
+    </script>
+</body>
+</html>

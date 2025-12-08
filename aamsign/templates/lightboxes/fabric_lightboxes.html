@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Fabric SEG Light Boxes - Aamsign{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="hero"
+        style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000'); background-size: cover; background-position: center; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);"></div>
+        <div class="hero-content" style="position: relative; z-index: 2;">
+            <h1 style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Fabric SEG Light Boxes</h1>
+            <p style="color: white; font-weight: 500;">Large-format, frameless illuminated fabric displays.</p>
+            <div class="cta-buttons">
+                <a href="#products" class="btn btn-primary">Browse Products</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Section -->
+    <section style="padding: 100px 0; background: #fff;">
+        <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: #1d1d1f;">Seamless. Stunning. Scalable.</h2>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #6e6e73; margin-bottom: 20px;">
+                Silicone Edge Graphics (SEG) light boxes use tension fabric graphics with a sewn-in silicone edge that 
+                locks into an aluminum frame. The result is a perfectly smooth, frameless appearance with even backlit illumination.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #6e6e73;">
+                Ideal for trade shows, retail wall displays, and large-scale interior branding. Graphics can be easily 
+                changed by simply pulling them out and clicking new ones in.
+            </p>
+        </div>
+    </section>
+
+    <!-- Product Gallery Section -->
+    <section style="padding: 80px 0; background: #f5f5f7;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="section-header">
+                <h2>Our Light Boxes Work</h2>
+                <p>Light box installations</p>
+            </div>
+
+            <div class="product-grid" style="gap: 30px; margin-top: 40px;">
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/1.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/2.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/3.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/4.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/5.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/light-boxes/9.30 单面灯箱/9.30 单面灯箱/无水印/6.png' %}" alt="Light Boxes" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="products-container">
+            <div class="section-header">
+                <h2>Available Fabric SEG Light Boxes</h2>
+                <p>Browse our collection of fabric SEG illuminated displays</p>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card"
+                    onclick="window.location='{% url 'shop:product_detail' product.id product.slug %}'">
+                    <div class="product-image">
+                        {% if product.main_image %}
+                        <img src="{{ product.main_image.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                        <div
+                            style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 3rem; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                            🖼️
+            </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">{{ product.category.name }}</p>
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <p style="font-size: 0.9rem; color: #6e6e73; margin-bottom: 10px;">
+                            {{ product.size_width }}" × {{ product.size_height }}" | {{ product.led_type }}
+                        </p>
+                        <p class="product-price">${{ product.price }}</p>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <a href="{% url 'shop:product_detail' product.id product.slug %}" class="btn btn-primary"
+                                style="flex: 1; text-align: center; padding: 10px;" onclick="event.stopPropagation();">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px;">No products available yet</h3>
+                    <p style="color: #6e6e73;">Check Django admin to add products or run: python manage.py
+                        create_sample_products</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

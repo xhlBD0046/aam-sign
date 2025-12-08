@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Aamsign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">Aamsign</a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="{% url 'design' %}">Free Design</a></li>
+                <li class="nav-item"><a href="{% url 'shop:cart_detail' %}" style="color: #2997ff; font-weight: 600;">🛒
+                        Cart ({{ cart|length }})</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Cart Page -->
+    <div class="cart-page">
+        <h1 style="margin-bottom: 40px;">Shopping Cart</h1>
+
+        {% if cart %}
+        <div class="cart-grid">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                {% for item in cart %}
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        {% if item.product.main_image %}
+                        <img src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" alt="{{ item.product.name }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="cart-item-info">
+                        <h3>{{ item.product.name }}</h3>
+                        <p class="cart-item-specs">
+                            {{ item.product.category.name }} |
+                            {{ item.product.size_width }}" × {{ item.product.size_height }}"
+                        </p>
+                        <div class="cart-item-actions">
+                            <form action="{% url 'shop:cart_add' item.product.id %}" method="post"
+                                style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="{{ item.quantity }}">
+                                <input type="hidden" name="update_quantity" value="True">
+                                <select name="quantity" onchange="this.form.submit()"
+                                    style="padding: 8px; border-radius: 6px; border: 1px solid #d2d2d7;">
+                                    {% for i in "123456789"|make_list %}
+                                    <option value="{{ forloop.counter }}" {% if item.quantity==forloop.counter
+                                        %}selected{% endif %}>
+                                        {{ forloop.counter }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+
+                            <form action="{% url 'shop:cart_remove' item.product.id %}" method="post"
+                                style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: none; border: none; color: #ff3b30; cursor: pointer; font-weight: 600;">
+                                    Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="cart-item-price">
+                        <p style="color: #6e6e73;">Price: ${{ item.price }}</p>
+                        <p class="cart-item-total">${{ item.total_price }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-row">
+                    <span>Subtotal ({{ cart|length }} items):</span>
+                    <span>${{ cart.get_total_price }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>FREE</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span>${{ cart.get_total_price }}</span>
+                </div>
+                <a href="{% url 'shop:checkout' %}" class="checkout-btn">
+                    Proceed to Checkout
+                </a>
+                <a href="{% url 'index' %}"
+                    style="display: block; text-align: center; margin-top: 15px; color: #2997ff;">
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <!-- Empty Cart -->
+        <div style="text-align: center; padding: 80px 20px;">
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Your cart is empty</h2>
+            <p style="color: #6e6e73; margin-bottom: 30px;">Add some amazing channel letter signs to get started!</p>
+            <a href="{% url 'index' %}" class="btn btn-primary">
+                Start Shopping
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

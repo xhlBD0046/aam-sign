@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Get a Free Quote - Aamsign{% endblock %}
+
+{% block extra_css %}
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        .quote-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .quote-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 80px;
+        }
+        
+        .quote-header h1 {
+            font-size: 3rem;
+            color: #1d1d1f;
+            margin-bottom: 15px;
+        }
+        
+        .quote-header p {
+            font-size: 1.2rem;
+            color: #6e6e73;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-wrapper {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .form-group label.required::after {
+            content: ' *';
+            color: #ff3b30;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            background: #f5f5f7;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #2997ff;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-file-input {
+            display: block;
+            padding: 12px;
+            border: 2px dashed #d2d2d7;
+            border-radius: 8px;
+            background: #f5f5f7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-file-input:hover {
+            border-color: #2997ff;
+            background: #fff;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: #2997ff;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #147ce5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(41, 151, 255, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #d2d2d7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .messages {
+            margin: 20px 0;
+        }
+
+        .message {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .message.success {
+            background: #d1f4e0;
+            color: #0a6e31;
+            border: 1px solid #0a6e31;
+        }
+
+        .message.error {
+            background: #ffd3d0;
+            color: #c41e3a;
+            border: 1px solid #c41e3a;
+        }
+
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0 0;
+        }
+
+        .errorlist li {
+            color: #ff3b30;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .form-help-text {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-top: 4px;
+        }
+
+        /* Hide honeypot field */
+        .honeypot-field {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .success-message h2 {
+            font-size: 2.5rem;
+            color: #0a6e31;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            font-size: 1.2rem;
+            color: #6e6e73;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-wrapper {
+                padding: 25px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .quote-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Quote Form Section -->
+    <div class="quote-container">
+        <div class="quote-header">
+            <h1>Get Your Free Quote</h1>
+            <p>Fill out the form below and our team will get back to you with a detailed quote within 24 hours.</p>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="form-wrapper">
+            <div class="success-message">
+                <h2>✓ Quote Submitted Successfully!</h2>
+                <p>Thank you for your request. Our team will review your information and contact you within 24 hours.</p>
+                <a href="{% url 'index' %}" class="btn btn-primary" style="display: inline-block; margin-top: 30px;">Back to Home</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="form-wrapper">
+            <form method="post" enctype="multipart/form-data" id="quoteForm">
+                {% csrf_token %}
+                
+                <h3 style="margin-bottom: 25px; color: #1d1d1f;">Contact Information</h3>
+                
+                <div class="form-group">
+                    <label for="id_full_name" class="required">Full Name</label>
+                    {{ form.full_name }}
+                    {{ form.full_name.errors }}
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="id_email" class="required">E-mail</label>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone" class="required">Phone Number</label>
+                        {{ form.phone }}
+                        {{ form.phone.errors }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_company">Company</label>
+                    {{ form.company }}
+                    {{ form.company.errors }}
+                </div>
+
+                <h3 style="margin: 40px 0 25px; color: #1d1d1f;">Project Details</h3>
+
+                <div class="form-group">
+                    <label for="id_design_file">Do you already have a design?</label>
+                     {{ form.design_file }}
+                    <p class="form-help-text">Upload your design file or draft (PDF, JPG, PNG, AI, PSD)</p>
+                    {{ form.design_file.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_design_description" class="required">Describe your design/s</label>
+                    {{ form.design_description }}
+                    {{ form.design_description.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Services you require</label>
+                    <div class="checkbox-group">
+                        {% for choice in form.services %}
+                        <div class="checkbox-item">
+                            {{ choice.tag }}
+                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {{ form.services.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_start_time" class="required">How soon are you ready to start?</label>
+                    {{ form.start_time }}
+                    {{ form.start_time.errors }}
+                </div>
+
+                <h3 style="margin: 40px 0 25px; color: #1d1d1f; border-top: 2px solid #e8e8ed; padding-top: 30px;">Security Verification</h3>
+
+                <div class="form-group" style="background: #f5f5f7; padding: 20px; border-radius: 12px; border: 2px solid #2997ff;">
+                    <label style="font-size: 16px; font-weight: 600; display: block; margin-bottom: 15px;">Please verify you're human</label>
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" style="display: inline-block;"></div>
+                    <p style="font-size: 13px; color: #6e6e73; margin-top: 10px;">Protected by Google reCAPTCHA</p>
+                </div>
+
+                <!-- Honeypot field -->
+                {{ form.website }}
+
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Quote Request</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Conditional logic - hide submit button if honeypot is filled
+        const honeypotField = document.querySelector('input[name="website"]');
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('quoteForm');
+
+        if (honeypotField) {
+            honeypotField.addEventListener('input', function() {
+                if (this.value) {
+                    submitBtn.style.display = 'none';
+                } else {
+                    submitBtn.style.display = 'block';
+                }
+            });
+        }
+
+        // Client-side validation enhancement
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#ff3b30';
+                } else {
+                    field.style.borderColor = '#d2d2d7';
+                }
+            });
+
+            // Check if at least one service is selected
+            const serviceCheckboxes = form.querySelectorAll('input[name="services"]');
+            const serviceChecked = Array.from(serviceCheckboxes).some(cb => cb.checked);
+            
+            if (!serviceChecked) {
+                isValid = false;
+                alert('Please select at least one service.');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+                return false;
+            }
+
+            // Disable submit button to prevent double submission
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+        });
+
+        // Remove error styling on input
+        document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(field => {
+            field.addEventListener('input', function() {
+                this.style.borderColor = '#d2d2d7';
+            });
+        });
+    </script>
+{% endblock %}

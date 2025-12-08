@@ -1,0 +1,673 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Design Your Sign - Aamsign{% endblock %}
+
+{% block extra_css %}
+    <!-- Google Fonts for Preview -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Amatic+SC&family=Architects+Daughter&family=Bangers&family=Caveat&family=Cookie&family=Courgette&family=Great+Vibes&family=Kaushan+Script&family=Monoton&family=Orbitron&family=Pacifico&family=Parisienne&family=Righteous&family=Sacramento&family=Satisfy&family=Shadows+Into+Light&family=Yellowtail&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+
+        .builder-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            /* Adjust for navbar height if needed, but navbar is in base. 
+               The original design page seemed to hide navbar or have it differently.
+               Let's check if it had navbar. Yes it did. 
+               But it had body { overflow: hidden; } which might conflict with base navbar if not careful.
+               Let's keep it as is and see. */
+            padding-top: 60px; /* Add padding for fixed navbar if it is fixed, or just let it flow */
+        }
+        
+        /* Override base navbar to be fixed or handle layout */
+        /* The original design.html had navbar inside body. */
+
+        .preview-area {
+            flex: 1;
+            background-color: #1a1a24;
+            background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .preview-content {
+            text-align: center;
+            padding: 40px;
+            position: relative;
+            min-width: 300px;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #preview-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 100px;
+            color: #fff;
+            white-space: pre-wrap;
+            line-height: 1.2;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- Neon Effects --- */
+        .neon-mode {
+            color: #fff;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-color, #ff00de),
+                0 0 40px var(--neon-color, #ff00de),
+                0 0 80px var(--neon-color, #ff00de),
+                0 0 90px var(--neon-color, #ff00de),
+                0 0 100px var(--neon-color, #ff00de),
+                0 0 150px var(--neon-color, #ff00de);
+        }
+
+        /* --- Channel Letter Effects --- */
+        /* Base 3D Structure */
+        .channel-mode {
+            /* The "Return" (side) color simulation */
+            color: var(--face-color, #ffffff);
+            /* We use text-shadow to simulate the 3D depth (return) */
+            text-shadow:
+                1px 1px 0 var(--finish-color, #333),
+                2px 2px 0 var(--finish-color, #333),
+                3px 3px 0 var(--finish-color, #333),
+                4px 4px 0 var(--finish-color, #333),
+                5px 5px 0 var(--finish-color, #333),
+                6px 6px 0 var(--finish-color, #333),
+                7px 7px 0 var(--finish-color, #333),
+                8px 8px 0 var(--finish-color, #333),
+                9px 9px 0 var(--finish-color, #222),
+                10px 10px 10px rgba(0, 0, 0, 0.5);
+            /* Optional: Add a stroke to define edges */
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Illumination: Front Lit */
+        .channel-mode.front-lit {
+            color: var(--face-color, #ffffff);
+            /* Face is Acrylic */
+            text-shadow:
+                0 0 10px var(--face-color, #ffffff),
+                0 0 20px var(--face-color, #ffffff),
+                1px 1px 0 var(--finish-color, #333),
+                2px 2px 0 var(--finish-color, #333),
+                3px 3px 0 var(--finish-color, #333),
+                4px 4px 0 var(--finish-color, #333),
+                5px 5px 0 var(--finish-color, #333),
+                6px 6px 0 var(--finish-color, #333),
+                7px 7px 0 var(--finish-color, #333),
+                8px 8px 0 var(--finish-color, #333),
+                15px 15px 20px rgba(0, 0, 0, 0.8);
+            /* Drop shadow */
+        }
+
+        /* Illumination: Back Lit (Halo) */
+        .channel-mode.back-lit {
+            color: var(--finish-color, #000);
+            /* Face is Metal Finish */
+            /* The halo comes from a large, blurred shadow behind the 3D stack */
+            text-shadow:
+                1px 1px 0 var(--finish-color, #222),
+                2px 2px 0 var(--finish-color, #222),
+                3px 3px 0 var(--finish-color, #222),
+                4px 4px 0 var(--finish-color, #222),
+                5px 5px 0 var(--finish-color, #222),
+                0 0 30px var(--face-color, #ffffff),
+                /* Halo (LED Color) */
+                0 0 60px var(--face-color, #ffffff);
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Illumination: Dual Lit (Front + Back) */
+        .channel-mode.dual-lit {
+            color: var(--face-color, #ffffff);
+            /* Face is Acrylic */
+            text-shadow:
+                0 0 15px var(--face-color, #ffffff),
+                /* Front Glow */
+                1px 1px 0 var(--finish-color, #333),
+                2px 2px 0 var(--finish-color, #333),
+                3px 3px 0 var(--finish-color, #333),
+                4px 4px 0 var(--finish-color, #333),
+                5px 5px 0 var(--finish-color, #333),
+                0 0 40px var(--face-color, #ffffff),
+                /* Back Halo */
+                0 0 80px var(--face-color, #ffffff);
+        }
+
+        /* Control Panel */
+        .control-panel {
+            width: 450px;
+            background: #fff;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+        }
+
+        .panel-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .toggle-group {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .toggle-btn.active {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2997ff;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .font-item {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            background: #fff;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .font-item:hover {
+            border-color: #999;
+        }
+
+        .font-item.selected {
+            border-color: #2997ff;
+            color: #2997ff;
+            background: #f0f7ff;
+        }
+
+        .color-item {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .color-item.selected {
+            border-color: #333;
+            transform: scale(0.95);
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #2997ff;
+        }
+
+        .panel-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        .price-tag {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2997ff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .btn-finish {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-finish:hover {
+            background: #333;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'index' %}" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+
+    <div class="builder-container">
+        <!-- Preview Area -->
+        <div class="preview-area">
+            <div class="preview-content">
+                <div id="preview-text" class="neon-mode">Start Typing</div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>Design Your Sign</h2>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" data-type="neon">Neon Sign</button>
+                    <button class="toggle-btn" data-type="channel">Channel Letter</button>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <!-- Text Input -->
+                <div class="form-group">
+                    <label class="form-label">Enter Text</label>
+                    <textarea id="text-input" placeholder="Type your text here...">Start Typing</textarea>
+                </div>
+
+                <!-- Font Selection -->
+                <div class="form-group">
+                    <label class="form-label">Choose a Font</label>
+                    <div class="grid-4" id="font-grid">
+                        <!-- Fonts will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Channel Letter Specific Options -->
+                <div id="channel-options" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Illumination Type</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" onclick="setIllumination('front')">Front Lit</button>
+                            <button class="toggle-btn" onclick="setIllumination('back')">Back Lit</button>
+                            <button class="toggle-btn" onclick="setIllumination('dual')">Front & Back</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Height (Inch)</label>
+                        <select id="height-select">
+                            <!-- Options 10-40 generated by JS -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Finish (Return/Side Color)</label>
+                        <div class="grid-4" id="finish-grid">
+                            <!-- Finish options -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Face Color (LED Color)</label>
+                        <div class="grid-4" id="face-color-grid">
+                            <!-- Face color options -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Neon Specific Options -->
+                <div id="neon-options">
+                    <div class="form-group">
+                        <label class="form-label">Neon Color</label>
+                        <div class="grid-4" id="neon-color-grid">
+                            <!-- Neon colors -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-footer">
+                <div class="price-tag" id="price-display">$150.00</div>
+                <button class="btn-finish">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Data
+        const fonts = [
+            { name: 'Great Vibes', family: "'Great Vibes', cursive" },
+            { name: 'Alex Brush', family: "'Alex Brush', cursive" },
+            { name: 'Sacramento', family: "'Sacramento', cursive" },
+            { name: 'Parisienne', family: "'Parisienne', cursive" },
+            { name: 'Allura', family: "'Allura', cursive" },
+            { name: 'Satisfy', family: "'Satisfy', cursive" },
+            { name: 'Caveat', family: "'Caveat', cursive" },
+            { name: 'Cookie', family: "'Cookie', cursive" },
+            { name: 'Bangers', family: "'Bangers', cursive" },
+            { name: 'Orbitron', family: "'Orbitron', sans-serif" },
+            { name: 'Pacifico', family: "'Pacifico', cursive" },
+            { name: 'Righteous', family: "'Righteous', cursive" }
+        ];
+
+        const neonColors = [
+            { name: 'Pink', hex: '#ff00de' },
+            { name: 'Warm White', hex: '#fffacd' },
+            { name: 'Cold White', hex: '#ffffff' },
+            { name: 'Red', hex: '#ff2a2a' },
+            { name: 'Cyan', hex: '#00e5ff' },
+            { name: 'Blue', hex: '#0022ff' },
+            { name: 'Green', hex: '#00ff00' },
+            { name: 'Yellow', hex: '#ffff00' }
+        ];
+
+        const channelFinishes = [
+            { name: 'Brushed Silver', color: '#c0c0c0', texture: 'linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 50%, #a0a0a0 100%)' },
+            { name: 'Polished Silver', color: '#e8e8e8', texture: 'linear-gradient(135deg, #ffffff 0%, #dcdcdc 50%, #b0b0b0 100%)' },
+            { name: 'Brushed Gold', color: '#d4af37', texture: 'linear-gradient(135deg, #fceabb 0%, #f8b500 50%, #fceabb 100%)' },
+            { name: 'Polished Gold', color: '#ffd700', texture: 'linear-gradient(135deg, #fff8db 0%, #ffd700 50%, #fff8db 100%)' },
+            { name: 'Matte Black', color: '#222', texture: '#222' },
+            { name: 'Gloss Black', color: '#000', texture: 'linear-gradient(135deg, #333 0%, #000 100%)' }
+        ];
+
+        const faceColors = [
+            { name: 'White', hex: '#ffffff' },
+            { name: 'Red', hex: '#ff0000' },
+            { name: 'Blue', hex: '#0000ff' },
+            { name: 'Green', hex: '#008000' },
+            { name: 'Yellow', hex: '#ffff00' },
+            { name: 'Black', hex: '#000000' }
+        ];
+
+        // State
+        let state = {
+            type: 'neon', // 'neon' or 'channel'
+            text: 'Start Typing',
+            font: fonts[0].family,
+            neonColor: neonColors[0].hex,
+            channelIllumination: 'front', // 'front', 'back', 'dual'
+            channelHeight: 20,
+            channelFinish: channelFinishes[0].color,
+            channelFaceColor: faceColors[0].hex
+        };
+
+        // DOM Elements
+        const previewText = document.getElementById('preview-text');
+        const textInput = document.getElementById('text-input');
+        const fontGrid = document.getElementById('font-grid');
+        const neonOptions = document.getElementById('neon-options');
+        const channelOptions = document.getElementById('channel-options');
+        const neonColorGrid = document.getElementById('neon-color-grid');
+        const finishGrid = document.getElementById('finish-grid');
+        const faceColorGrid = document.getElementById('face-color-grid');
+        const heightSelect = document.getElementById('height-select');
+        const priceDisplay = document.getElementById('price-display');
+        const typeBtns = document.querySelectorAll('.toggle-btn[data-type]');
+
+        // Initialization
+        function init() {
+            renderFonts();
+            renderNeonColors();
+            renderChannelOptions();
+            setupEventListeners();
+            updatePreview();
+        }
+
+        function renderFonts() {
+            fontGrid.innerHTML = fonts.map((font, index) => `
+                <div class="font-item ${index === 0 ? 'selected' : ''}" 
+                     style="font-family: ${font.family}"
+                     onclick="selectFont(${index}, this)">
+                    ${font.name}
+                </div>
+            `).join('');
+        }
+
+        function renderNeonColors() {
+            neonColorGrid.innerHTML = neonColors.map((c, index) => `
+                <div class="color-item ${index === 0 ? 'selected' : ''}" 
+                     style="background-color: ${c.hex}"
+                     onclick="setNeonColor('${c.hex}', this)"></div>
+            `).join('');
+        }
+
+        function renderChannelOptions() {
+            // Height
+            for (let i = 10; i <= 40; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.text = i + '"';
+                if (i === 20) opt.selected = true;
+                heightSelect.add(opt);
+            }
+
+            // Finish
+            finishGrid.innerHTML = channelFinishes.map((f, index) => `
+                <div class="color-item ${index === 0 ? 'selected' : ''}" 
+                     style="background: ${f.texture}"
+                     title="${f.name}"
+                     onclick="setChannelFinish('${f.color}', this)"></div>
+            `).join('');
+
+            // Face Color
+            faceColorGrid.innerHTML = faceColors.map((c, index) => `
+                <div class="color-item ${index === 0 ? 'selected' : ''}" 
+                     style="background-color: ${c.hex}; border: 1px solid #ddd;"
+                     title="${c.name}"
+                     onclick="setChannelFaceColor('${c.hex}', this)"></div>
+            `).join('');
+        }
+
+        function setupEventListeners() {
+            textInput.addEventListener('input', (e) => {
+                state.text = e.target.value || ' ';
+                updatePreview();
+            });
+
+            typeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setType(btn.dataset.type);
+                    typeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            heightSelect.addEventListener('change', (e) => {
+                state.channelHeight = parseInt(e.target.value);
+                updatePrice();
+            });
+        }
+
+        // Actions
+        window.selectFont = (index, el) => {
+            const font = fonts[index];
+            state.font = font.family;
+            document.querySelectorAll('.font-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            updatePreview();
+        };
+
+        window.setNeonColor = (hex, el) => {
+            state.neonColor = hex;
+            document.querySelectorAll('#neon-color-grid .color-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            updatePreview();
+        };
+
+        window.setType = (type) => {
+            state.type = type;
+            if (type === 'neon') {
+                neonOptions.style.display = 'block';
+                channelOptions.style.display = 'none';
+            } else {
+                neonOptions.style.display = 'none';
+                channelOptions.style.display = 'block';
+            }
+            updatePreview();
+            updatePrice();
+        };
+
+        window.setIllumination = (mode) => {
+            state.channelIllumination = mode;
+            // Update UI buttons
+            const btns = document.querySelectorAll('#channel-options .toggle-group button');
+            btns.forEach(btn => btn.classList.remove('active'));
+            if (mode === 'front') btns[0].classList.add('active');
+            if (mode === 'back') btns[1].classList.add('active');
+            if (mode === 'dual') btns[2].classList.add('active');
+
+            updatePreview();
+            updatePrice();
+        };
+
+        window.setChannelFinish = (color, el) => {
+            state.channelFinish = color;
+            document.querySelectorAll('#finish-grid .color-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            updatePreview();
+        };
+
+        window.setChannelFaceColor = (hex, el) => {
+            state.channelFaceColor = hex;
+            document.querySelectorAll('#face-color-grid .color-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            updatePreview();
+        };
+
+        function updatePreview() {
+            previewText.innerText = state.text;
+            previewText.style.fontFamily = state.font;
+
+            // Reset classes
+            previewText.className = '';
+
+            if (state.type === 'neon') {
+                previewText.classList.add('neon-mode');
+                previewText.style.setProperty('--neon-color', state.neonColor);
+                // Reset channel vars
+                previewText.style.removeProperty('--face-color');
+                previewText.style.removeProperty('--finish-color');
+            } else {
+                // Channel Letter
+                previewText.classList.add('channel-mode');
+                previewText.classList.add(state.channelIllumination + '-lit');
+
+                previewText.style.setProperty('--face-color', state.channelFaceColor);
+                previewText.style.setProperty('--finish-color', state.channelFinish);
+            }
+        }
+
+        function updatePrice() {
+            let base = 100;
+            if (state.type === 'neon') {
+                base += state.text.length * 10;
+            } else {
+                base += state.text.length * 15;
+                base += (state.channelHeight - 10) * 5;
+                if (state.channelIllumination === 'dual') base += 80;
+                else if (state.channelIllumination === 'back') base += 60;
+                else base += 50;
+            }
+            priceDisplay.innerText = '$' + base.toFixed(2);
+        }
+
+        // Run
+        init();
+
+    </script>
+{% endblock %}

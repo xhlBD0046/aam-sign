@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Aamsign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .checkout-form-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #0071e3;
+            outline: none;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .order-summary {
+            background: #f5f5f7;
+            padding: 30px;
+            border-radius: 12px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .summary-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .summary-item-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .summary-item-info p {
+            font-size: 0.9rem;
+            color: #6e6e73;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .total-final {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #d2d2d7;
+        }
+
+        .btn-continue {
+            width: 100%;
+            padding: 15px;
+            background: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-continue:hover {
+            background: #0077ed;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+                order: -1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">Aamsign</a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="{% url 'shop:cart_detail' %}">Return to Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <!-- Checkout Form -->
+        <div class="checkout-form-section">
+            <h2 class="section-title">Shipping Information</h2>
+            <form action="{% url 'shop:checkout' %}" method="post" id="checkout-form">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Street Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State / Province</label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="zip_code">Zip / Postal Code</label>
+                        <input type="text" id="zip_code" name="zip_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" name="country" value="United States" readonly
+                            style="background: #f5f5f7;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-continue">Continue to Payment</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3 style="margin-bottom: 20px;">Order Summary</h3>
+
+            {% for item in cart %}
+            <div class="summary-item">
+                {% if item.product.main_image %}
+                <img src="{{ item.product.main_image.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                <div
+                    style="width: 60px; height: 60px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 6px;">
+                    💡</div>
+                {% endif %}
+
+                <div class="summary-item-info">
+                    <h4>{{ item.product.name }}</h4>
+                    <p>Qty: {{ item.quantity }}</p>
+                    <p>${{ item.total_price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>${{ cart.get_total_price }}</span>
+            </div>
+            <div class="total-row">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            <div class="total-row total-final">
+                <span>Total</span>
+                <span>${{ cart.get_total_price }}</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

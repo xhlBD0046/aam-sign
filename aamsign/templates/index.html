@@ -1,82 +1,213 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Site Under Construction</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0f172a;
-            color: #e5e7eb;
-        }
-        .container {
-            text-align: center;
-            padding: 2rem 1.5rem;
-            max-width: 480px;
-            border-radius: 1.5rem;
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-        }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            background: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
-            margin-bottom: 1rem;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: #22c55e;
-            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
-        }
-        h1 {
-            font-size: clamp(1.6rem, 4vw, 2rem);
-            margin: 0 0 0.75rem;
-        }
-        p {
-            margin: 0 0 1.5rem;
-            font-size: 0.95rem;
-            color: #9ca3af;
-            line-height: 1.6;
-        }
-        .sub {
-            font-size: 0.8rem;
-            color: #6b7280;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="badge">
-        <span class="dot"></span>
-        <span>Site in progress</span>
-    </div>
-    <h1>We’re building something exciting.</h1>
-    <p>
-        This website is currently under construction.<br>
-        Please stay tuned — a brand new experience is coming soon.
-    </p>
-    <div class="sub">
-        Thank you for your patience and support.
-    </div>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <!-- Placeholder video URL, replace with actual asset -->
+            <source src="https://videos.pexels.com/video-files/3121459/3121459-uhd_2560_1440_25fps.mp4"
+                type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>Illiminate Your Brand.</h1>
+            <p>Premium custom channel letters and neon signs for businesses that stand out.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Pricing & Quote</a>
+                <a href="#" class="btn btn-secondary">Shop Standard</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Factory Introduction -->
+    <section class="factory-section">
+        <div class="section-header">
+            <h2>Craftsmanship Meets Technology.</h2>
+            <p>Direct from our factory to your storefront.</p>
+        </div>
+        <div class="factory-content">
+            <div class="factory-text">
+                <h3>Precision Engineering.</h3>
+                <p>We combine traditional craftsmanship with state-of-the-art laser cutting and 3D bending technology to
+                    create signs that are built to last and designed to impress.</p>
+                <a href="#" class="btn btn-secondary" style="border-color: #333; color: #fff;">Learn More</a>
+            </div>
+            <div class="factory-media">
+                <!-- Placeholder image -->
+                <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=1000&auto=format&fit=crop"
+                    alt="Factory Workshop">
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section class="best-sellers">
+        <div class="section-header">
+            <h2>Best Sellers.</h2>
+            <p>Our most popular sign solutions.</p>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop"
+                        alt="Neon Sign">
+                </div>
+                <div class="product-info">
+                    <h3>Custom Neon</h3>
+                    <p>Vibrant, energy-efficient LED neon.</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop"
+                        alt="Channel Letters">
+                </div>
+                <div class="product-info">
+                    <h3>Halo-Lit Letters</h3>
+                    <p>Sophisticated backlit illumination.</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?q=80&w=800&auto=format&fit=crop"
+                        alt="Light Box">
+                </div>
+                <div class="product-info">
+                    <h3>Blade Signs</h3>
+                    <p>Double-sided visibility for foot traffic.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Our Work Showcase (Vertical Scrolling) -->
+    <section class="our-work-section">
+        <div class="our-work-container">
+            <div class="our-work-left">
+                <h2>Light Up Your Story</h2>
+                <p>Every sign tells a story. Dive into our diverse range of LED neon signs and find the one that speaks
+                    to you.</p>
+                <a href="/illumination/front-lit" class="btn btn-primary">Shop Now</a>
+            </div>
+            <div class="our-work-right">
+                <!-- Column 1 -->
+                <div class="scrolling-column-wrapper">
+                    <div class="scrolling-column" style="--duration: 40s;">
+                        <!-- col_1, 1~18 -->
+                        <img src="{% static 'images/general/index/col_1/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_1/2.png' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_1/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_1/4.JPG' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_1/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_1/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_1/7.jpg' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_1/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_1/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_1/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_1/11.png' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_1/12.jpg' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_1/13.jpg' %}" alt="Showcase 13">
+                        <img src="{% static 'images/general/index/col_1/14.JPG' %}" alt="Showcase 14">
+                        <img src="{% static 'images/general/index/col_1/15.jpg' %}" alt="Showcase 15">
+                        <img src="{% static 'images/general/index/col_1/16.png' %}" alt="Showcase 16">
+                        <img src="{% static 'images/general/index/col_1/17.jpg' %}" alt="Showcase 17">
+                        <img src="{% static 'images/general/index/col_1/18.jpg' %}" alt="Showcase 18">
+
+                        <!-- Duplicate for seamless loop -->
+                        <img src="{% static 'images/general/index/col_1/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_1/2.png' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_1/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_1/4.JPG' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_1/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_1/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_1/7.jpg' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_1/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_1/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_1/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_1/11.png' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_1/12.jpg' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_1/13.jpg' %}" alt="Showcase 13">
+                        <img src="{% static 'images/general/index/col_1/14.JPG' %}" alt="Showcase 14">
+                        <img src="{% static 'images/general/index/col_1/15.jpg' %}" alt="Showcase 15">
+                        <img src="{% static 'images/general/index/col_1/16.png' %}" alt="Showcase 16">
+                        <img src="{% static 'images/general/index/col_1/17.jpg' %}" alt="Showcase 17">
+                        <img src="{% static 'images/general/index/col_1/18.jpg' %}" alt="Showcase 18">
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="scrolling-column-wrapper">
+                    <div class="scrolling-column" style="--duration: 50s;">
+                        <!-- col_2, 1~13 -->
+                        <img src="{% static 'images/general/index/col_2/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_2/2.png' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_2/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_2/4.jpg' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_2/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_2/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_2/7.jpg' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_2/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_2/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_2/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_2/11.jpg' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_2/12.JPG' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_2/13.jpg' %}" alt="Showcase 13">
+
+                        <!-- Duplicate -->
+                        <img src="{% static 'images/general/index/col_2/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_2/2.png' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_2/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_2/4.jpg' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_2/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_2/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_2/7.jpg' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_2/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_2/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_2/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_2/11.jpg' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_2/12.JPG' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_2/13.jpg' %}" alt="Showcase 13">
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="scrolling-column-wrapper">
+                    <div class="scrolling-column" style="--duration: 45s;">
+                        <!-- col_3, 1~13 -->
+                        <img src="{% static 'images/general/index/col_3/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_3/2.jpg' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_3/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_3/4.png' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_3/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_3/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_3/7.png' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_3/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_3/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_3/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_3/11.jpg' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_3/12.png' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_3/13.png' %}" alt="Showcase 13">
+
+                        <!-- Duplicate -->
+                        <img src="{% static 'images/general/index/col_3/1.jpg' %}"  alt="Showcase 1">
+                        <img src="{% static 'images/general/index/col_3/2.jpg' %}"  alt="Showcase 2">
+                        <img src="{% static 'images/general/index/col_3/3.jpg' %}"  alt="Showcase 3">
+                        <img src="{% static 'images/general/index/col_3/4.png' %}"  alt="Showcase 4">
+                        <img src="{% static 'images/general/index/col_3/5.jpg' %}"  alt="Showcase 5">
+                        <img src="{% static 'images/general/index/col_3/6.jpg' %}"  alt="Showcase 6">
+                        <img src="{% static 'images/general/index/col_3/7.png' %}"  alt="Showcase 7">
+                        <img src="{% static 'images/general/index/col_3/8.jpg' %}"  alt="Showcase 8">
+                        <img src="{% static 'images/general/index/col_3/9.jpg' %}"  alt="Showcase 9">
+                        <img src="{% static 'images/general/index/col_3/10.jpg' %}" alt="Showcase 10">
+                        <img src="{% static 'images/general/index/col_3/11.jpg' %}" alt="Showcase 11">
+                        <img src="{% static 'images/general/index/col_3/12.png' %}" alt="Showcase 12">
+                        <img src="{% static 'images/general/index/col_3/13.png' %}" alt="Showcase 13">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - Aamsign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            display: inline-block;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #6e6e73;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .order-details {
+            background: #f5f5f7;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #0071e3;
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-home:hover {
+            background: #0077ed;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">Aamsign</a>
+        </div>
+    </nav>
+
+    <div class="confirmation-container">
+        <div class="success-icon">🎉</div>
+        <h1>Order Confirmed!</h1>
+        <p>Thank you for your purchase, {{ order.first_name }}!<br>
+            We have received your order #{{ order.id }} and sent a confirmation email to {{ order.email }}.</p>
+
+        <div class="order-details">
+            <h3 style="margin-bottom: 15px;">Order Details</h3>
+            <p style="margin-bottom: 10px;"><strong>Order Number:</strong> #{{ order.id }}</p>
+            <p style="margin-bottom: 10px;"><strong>Date:</strong> {{ order.created_at|date:"F j, Y" }}</p>
+            <p style="margin-bottom: 10px;"><strong>Total:</strong> ${{ order.total_amount }}</p>
+            <p style="margin-bottom: 0;"><strong>Shipping To:</strong><br>
+                {{ order.address }}<br>
+                {{ order.city }}, {{ order.state }} {{ order.zip_code }}<br>
+                {{ order.country }}</p>
+        </div>
+
+        <a href="{% url 'index' %}" class="btn-home">Continue Shopping</a>
+    </div>
+</body>
+
+</html>

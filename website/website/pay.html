@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Vintage Sign</title>
+    <style>
+        :root {
+            --accent-color: #ff5500; /* 橙色按钮 */
+            --accent-hover: #e04b00;
+            --bg-gray: #f5f5f5;
+            --border-color: #d9d9d9;
+            --focus-ring: #197bbd;
+            --text-main: #333;
+            --text-sub: #737373;
+            --input-bg: #fff;
+            --payment-bg-selected: #f4fcfc; /* 选中支付方式的微蓝/米色背景 */
+            --radius: 5px;
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            min-height: 100vh;
+        }
+
+        /* === 布局框架 === */
+        .layout-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            flex-direction: row;
+        }
+
+        /* 左侧主内容 */
+        .main-section {
+            flex: 1.3;
+            padding: 40px 5%;
+            border-right: 1px solid #e1e1e1;
+        }
+
+        /* 右侧侧边栏 */
+        .sidebar-section {
+            flex: 1;
+            background-color: #fafafa;
+            padding: 40px 5%;
+        }
+
+        /* === 头部 Logo === */
+        .header-center {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #eee;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        .cart-icon-top {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        /* === 通用表单样式 === */
+        h2 { font-size: 18px; font-weight: 600; margin-bottom: 15px; margin-top: 30px; }
+        h2:first-of-type { margin-top: 0; }
+        
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .signin-link { color: var(--focus-ring); font-size: 14px; text-decoration: none; }
+
+        .form-group { margin-bottom: 12px; position: relative; }
+        .form-row { display: flex; gap: 12px; }
+        .form-col { flex: 1; }
+
+        label.floating-label {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], select {
+            width: 100%;
+            height: 46px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            background: #fff;
+            color: #333;
+        }
+        input:focus { border-color: var(--focus-ring); box-shadow: 0 0 0 1px var(--focus-ring); }
+        input::placeholder { color: var(--text-sub); }
+
+        /* 带有图标的输入框 */
+        .input-with-icon { position: relative; }
+        .input-with-icon input { padding-right: 35px; }
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+        }
+
+        /* Checkbox */
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-top: 10px; }
+        input[type="checkbox"] { width: 18px; height: 18px; border-radius: 4px; accent-color: var(--focus-ring); }
+
+        /* === 快捷支付 (Express Checkout) === */
+        .express-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .skeleton-btn {
+            background: #e6e6e6;
+            height: 48px;
+            border-radius: 4px;
+        }
+        .divider-or {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-sub);
+            margin: 20px 0;
+            position: relative;
+        }
+        .divider-or::before, .divider-or::after {
+            content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #e6e6e6;
+        }
+        .divider-or::before { left: 0; }
+        .divider-or::after { right: 0; }
+
+        /* === 运输方式 (Shipping Method) === */
+        .shipping-method-placeholder {
+            background: #f9f9f9;
+            padding: 25px;
+            text-align: center;
+            color: var(--text-sub);
+            font-size: 14px;
+            border-radius: var(--radius);
+        }
+
+        /* === 支付部分 (Payment) === */
+        .secure-text { font-size: 12px; color: var(--text-sub); margin-bottom: 15px; display: block; }
+        
+        .payment-box {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .payment-option {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .payment-option:last-child { border-bottom: none; }
+        
+        .payment-header {
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: #fff;
+        }
+        .payment-header.active { background: #f4fcfc; } /* 浅蓝色背景 */
+        
+        .radio-custom {
+            margin-right: 10px;
+            width: 18px; height: 18px;
+            accent-color: var(--focus-ring);
+        }
+        
+        .payment-label { flex: 1; font-size: 14px; font-weight: 500; }
+        .payment-icons { display: flex; gap: 5px; }
+        
+        /* 信用卡表单区域 */
+        .credit-card-form {
+            padding: 20px;
+            background: #fafafa; /* 稍深一点的灰 */
+            border-top: 1px solid var(--border-color);
+            display: block;
+        }
+
+        /* === 小费 (Tips) === */
+        .tips-container {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 10px;
+        }
+        .tip-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tip-btn {
+            border: 1px solid var(--border-color);
+            background: #fff;
+            padding: 10px 5px;
+            text-align: center;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tip-btn.active {
+            background: #eef9fd; /* 选中淡蓝 */
+            border-color: var(--focus-ring);
+            color: var(--focus-ring);
+        }
+        .tip-percent { font-size: 14px; font-weight: 600; }
+        .tip-amount { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+        
+        .custom-tip-row { display: none; } /* 截图里看起来没展开 */
+
+        /* === 底部按钮 === */
+        .pay-btn {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: var(--radius);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        .pay-btn:hover { background-color: var(--accent-hover); }
+
+        /* === 侧边栏 (Sidebar) === */
+        .product-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .product-img-box {
+            width: 64px; height: 64px;
+            background: #000;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-img-box img { max-width: 80%; }
+        .badge-count {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: #737373; color: white;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .product-details { flex: 1; }
+        .p-title { font-size: 14px; font-weight: 600; color: #333; }
+        .p-variant { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+        .p-price { font-size: 14px; font-weight: 500; }
+
+        .discount-row { display: flex; gap: 10px; padding: 20px 0; border-top: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1; }
+        .btn-apply {
+            background: #e6e6e6; color: #737373; border: none;
+            padding: 0 15px; border-radius: var(--radius); font-weight: 600;
+        }
+
+        .summary-line {
+            display: flex; justify-content: space-between;
+            font-size: 14px; margin-top: 15px; color: var(--text-sub);
+        }
+        .discount-tag { color: var(--text-sub); display: flex; align-items: center; gap: 5px; }
+        .icon-tag { width: 16px; height: 16px; fill: currentColor; }
+
+        .total-line {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1;
+        }
+        .total-text { font-size: 16px; }
+        .total-price { font-size: 24px; font-weight: 600; color: #333; }
+        .total-currency { font-size: 12px; color: var(--text-sub); vertical-align: middle; }
+        
+        .savings-line {
+            display: flex; justify-content: space-between;
+            margin-top: 10px; font-size: 12px; color: var(--text-main);
+        }
+
+        .footer-links {
+            margin-top: 40px; font-size: 11px; color: var(--accent-color);
+            display: flex; gap: 15px; text-decoration: underline;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .layout-container { flex-direction: column-reverse; }
+            .main-section { border-right: none; }
+            .sidebar-section { border-bottom: 1px solid #e1e1e1; background: #fafafa; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout-container">
+    
+    <div class="main-section">
+        
+        <div class="header-center">
+            <div class="brand-logo">LOGO</div>
+            <div class="cart-icon-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </div>
+        </div>
+
+        <div style="text-align:center; font-size:12px; color:#737373; margin-bottom:10px;">Express checkout</div>
+        <div class="express-container">
+            <div class="skeleton-btn"></div>
+            <div class="skeleton-btn"></div>
+        </div>
+        <div class="divider-or">OR</div>
+
+        <div class="section-header">
+            <h2>Contact</h2>
+            <a href="#" class="signin-link">Sign in</a>
+        </div>
+        <div class="form-group">
+            <input type="email" placeholder="Email">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="news" checked>
+                <label for="news">Email me with news and offers</label>
+            </div>
+        </div>
+
+        <h2>Delivery</h2>
+        <div class="form-group">
+            <select>
+                <option>United States</option>
+            </select>
+            <label class="floating-label" style="position:absolute; top:2px; left:13px; font-size:11px; color:#737373;">Country/Region</label>
+        </div>
+        <div class="form-row">
+            <div class="form-col"><input type="text" placeholder="First name"></div>
+            <div class="form-col"><input type="text" placeholder="Last name"></div>
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Company (optional)">
+        </div>
+        <div class="form-group input-with-icon">
+            <input type="text" placeholder="Address">
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Apartment, suite, etc. (optional)">
+        </div>
+        <div class="form-row">
+            <div class="form-col"><input type="text" placeholder="City"></div>
+            <div class="form-col">
+                <select style="color:#737373"><option>State</option></select>
+            </div>
+            <div class="form-col"><input type="text" placeholder="ZIP code"></div>
+        </div>
+        <div class="form-group input-with-icon">
+            <input type="tel" placeholder="Phone">
+            <svg class="input-icon" style="cursor:pointer" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="saveinfo">
+            <label for="saveinfo">Save this information for next time</label>
+        </div>
+
+        <h2>Shipping method</h2>
+        <div class="shipping-method-placeholder">
+            Enter your shipping address to view available shipping methods.
+        </div>
+
+        <h2>Payment</h2>
+        <span class="secure-text">All transactions are secure and encrypted.</span>
+        
+        <div class="payment-box">
+            <div class="payment-option">
+                <div class="payment-header active">
+                    <input type="radio" name="payment" checked class="radio-custom">
+                    <span class="payment-label">Credit card</span>
+                    <div class="payment-icons">
+                        <div style="background:#eee; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:bold;">VISA</div>
+                        <div style="background:#eee; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:bold;">MC</div>
+                        <div style="background:#eee; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:bold;">AMEX</div>
+                        <span style="font-size:12px; color:#737373; margin-left:5px;">+4</span>
+                    </div>
+                </div>
+                <div class="credit-card-form">
+                    <div class="form-group input-with-icon">
+                        <input type="text" placeholder="Card number">
+                        <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col"><input type="text" placeholder="Expiration date (MM / YY)"></div>
+                        <div class="form-col input-with-icon">
+                            <input type="text" placeholder="Security code">
+                            <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Name on card">
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="billing" checked>
+                        <label for="billing">Use shipping address as billing address</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-option">
+                <div class="payment-header">
+                    <input type="radio" name="payment" class="radio-custom">
+                    <span class="payment-label" style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                        PayPal
+                        <span style="font-weight:900; font-style:italic; color:#003087; margin-right:10px;">PayPal</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="payment-option">
+                <div class="payment-header">
+                    <input type="radio" name="payment" class="radio-custom">
+                    <span class="payment-label">Additional payment methods</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Add tip</h2>
+        <div class="checkbox-wrapper" style="margin-bottom:15px;">
+            <input type="checkbox" id="support" checked>
+            <label for="support">Show your support for the team at VINTAGE SIGN</label>
+        </div>
+        
+        <div class="tips-container">
+            <div class="tip-grid">
+                <div class="tip-btn">
+                    <div class="tip-percent">5%</div>
+                    <div class="tip-amount">$7.56</div>
+                </div>
+                <div class="tip-btn">
+                    <div class="tip-percent">10%</div>
+                    <div class="tip-amount">$15.12</div>
+                </div>
+                <div class="tip-btn">
+                    <div class="tip-percent">15%</div>
+                    <div class="tip-amount">$22.68</div>
+                </div>
+                <div class="tip-btn active">
+                    <div class="tip-percent" style="font-weight:normal; margin-top:5px;">None</div>
+                </div>
+            </div>
+            
+            <div class="form-group input-with-icon" style="display:flex; gap:10px; align-items:center;">
+                 <div style="position:relative; flex:1;">
+                     <label style="position:absolute; left:10px; top:14px; font-size:12px; color:#737373;">Custom tip</label>
+                     <input type="text" style="padding-left:80px; text-align:right;" value="">
+                     <div style="position:absolute; right:10px; top:10px; font-weight:bold; color:#737373; letter-spacing:10px;">- +</div>
+                 </div>
+                 <button style="height:46px; padding:0 20px; background:#f5f5f5; border:1px solid #ddd; border-radius:5px; color:#737373;">Add tip</button>
+            </div>
+            <div style="font-size:12px; color:#737373; margin-top:10px;">Thank you, we appreciate it.</div>
+        </div>
+
+        <button class="pay-btn">Pay now</button>
+
+        <div class="footer-links">
+            <a href="#" style="color:#ff5500;">Refund policy</a>
+            <a href="#" style="color:#ff5500;">Shipping</a>
+            <a href="#" style="color:#ff5500;">Privacy policy</a>
+            <a href="#" style="color:#ff5500;">Terms of service</a>
+        </div>
+
+    </div>
+
+    <div class="sidebar-section">
+        
+        <div class="product-item">
+            <div class="product-img-box">
+                <span style="color:#ff00de; font-family:cursive; text-shadow:0 0 2px #fff;">neon</span>
+                <div class="badge-count">1</div>
+            </div>
+            <div class="product-details">
+                <div class="p-title">'Rabbit ears2' neon sign</div>
+                <div class="p-variant">50cm / Manycolours / Cut to shape</div>
+            </div>
+            <div class="p-price">$189.00</div>
+        </div>
+
+        <div class="discount-row">
+            <input type="text" placeholder="Discount code">
+            <button class="btn-apply">Apply</button>
+        </div>
+
+        <div class="summary-line">
+            <span>Subtotal</span>
+            <span>$189.00</span>
+        </div>
+        <div class="summary-line">
+            <span>Order discount</span>
+        </div>
+        <div class="summary-line">
+            <span class="discount-tag">
+                <svg class="icon-tag" viewBox="0 0 18 18"><path d="M17.78 3.09C17.45 2.443 16.778 2 16 2h-5.165c-.535 0-1.046.214-1.422.593l-6.82 6.89c0 .002 0 .003-.002.003-.245.253-.413.554-.5.874L.738 8.055c-.56-.953-.24-2.178.712-2.737L9.823.425C10.284.155 10.834.08 11.35.22l4.99 1.337c.755.203 1.293.814 1.44 1.533z" fill="#737373"></path><path d="M10.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="#737373"></path></svg>
+                <span style="font-size:12px;">20% OFF APPLIED AT CHEC...</span>
+            </span>
+            <span>-$37.80</span>
+        </div>
+        <div class="summary-line">
+            <span style="display:flex; gap:5px; align-items:center;">
+                Shipping
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </span>
+            <span style="font-size:12px; background:#e6e6e6; padding:2px 6px; border-radius:4px; display:inline-block; width:20px; height:10px;"></span>
+        </div>
+
+        <div class="total-line">
+            <span class="total-text">Total</span>
+            <div>
+                <span class="total-currency">USD</span>
+                <span class="total-price">$151.20</span>
+            </div>
+        </div>
+        
+        <div class="savings-line">
+            <span style="display:flex; align-items:center; gap:5px;">
+                <svg class="icon-tag" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" width="14" height="14"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                TOTAL SAVINGS
+            </span>
+            <span>$37.80</span>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

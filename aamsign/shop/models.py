@@ -37,6 +37,21 @@ class Product(models.Model):
     led_type = models.CharField(max_length=100, blank=True)
     power_consumption = models.CharField(max_length=50, blank=True)
     
+    # Subcategory for filtering
+    SUBCATEGORY_CHOICES = [
+        ('front-lit', 'Front-Lit Channel Letters'),
+        ('back-lit', 'Back-Lit / Halo-Lit'),
+        ('front-back-lit', 'Front + Back-Lit'),
+        ('open-face', 'Open-Face / Marquee'),
+        ('non-illuminated', 'Non-Illuminated 3D'),
+        ('rgb-programmable', 'RGB / Programmable'),
+        ('neon', 'Neon Signs'),
+        ('lightbox', 'Light Boxes'),
+        ('logo', 'Logo Signs'),
+        ('other', 'Other'),
+    ]
+    subcategory = models.CharField(max_length=50, choices=SUBCATEGORY_CHOICES, default='other')
+    
     # Inventory
     stock = models.IntegerField(default=0)
     available = models.BooleanField(default=True)

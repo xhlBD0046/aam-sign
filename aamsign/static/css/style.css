@@ -70,9 +70,8 @@ ul {
 
 /* ✅ 3. 核心：限制 logo 图片的高度，避免撑大 navbar */
 .logo img {
-    height: 40px;         /* 你可以改 36 / 48，看实际效果 */
-    width: auto;
-    display: block;
+    height: 64px;         /* 你可以改 36 / 48，看实际效果 */
+
 }
 
 /* 导航链接区域 */
@@ -168,7 +167,7 @@ ul {
 
 .hero-content {
     z-index: 1;
-    max-width: 800px;
+    max-width: 1500px;
     padding: 0 20px;
     animation: fadeIn 1.5s ease-out;
 }
@@ -459,41 +458,85 @@ section {
 
 /* Footer */
 footer {
-    background: #f5f5f7;
-    padding: 50px 0 20px;
+    background: #ffffff;
+    padding: 60px 0 20px;
     border-top: 1px solid #d2d2d7;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--secondary-text);
 }
 
 .footer-content {
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 40px;
     padding: 0 20px;
 }
 
 .footer-col h4 {
     color: var(--text-color);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-col p {
+    margin-bottom: 15px;
+    line-height: 1.6;
 }
 
 .footer-col ul li {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: var(--secondary-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .footer-col ul li a:hover {
-    text-decoration: underline;
+    color: var(--accent-color);
+}
+
+/* Newsletter Form */
+.newsletter-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #d2d2d7;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.newsletter-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background-color: #e64a19;
 }
 
 .footer-bottom {
-    text-align: center;
-    margin-top: 50px;
-    padding-top: 20px;
-    border-top: 1px solid #d2d2d7;
+    text-align: left;
+    margin-top: 60px;
+    padding: 20px 20px 0;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: none;
 }
 
 @keyframes fadeIn {
@@ -530,6 +573,15 @@ footer {
         display: none;
         /* Hide 3rd column on mobile */
     }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -549,5 +601,9 @@ footer {
 
     .our-work-right {
         height: 500px;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

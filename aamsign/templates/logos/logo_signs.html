@@ -9,33 +9,97 @@
 
 {% block content %}
     <!-- Hero Section -->
-    <header class="hero"
-        style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000'); background-size: cover; background-position: center; position: relative;">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);"></div>
+    <header class="hero" style="position: relative; overflow: hidden;">
+        <!-- 背景视频 -->
+        <video
+            autoplay
+            muted
+            loop
+            playsinline
+            style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 0;
+            ">
+            <source src="{% static 'videos/logo_signs/banner.mp4' %}" type="video/mp4">
+            您的浏览器不支持视频标签。
+        </video>
+
+        <!-- 黑色半透明遮罩 -->
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+        "></div>
+
+        <!-- 文案内容 -->
         <div class="hero-content" style="position: relative; z-index: 2;">
-            <h1 style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Custom Logo Signs</h1>
-            <p style="color: white; font-weight: 500;">Premium metal and acrylic logo displays for corporate branding.</p>
+            <h1 style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+                Custom Logo Signs
+            </h1>
+            <p style="color: white; font-weight: 500;">
+                Premium metal and acrylic logo displays for corporate branding.
+            </p>
             <div class="cta-buttons">
                 <a href="#products" class="btn btn-primary">Browse Products</a>
             </div>
         </div>
     </header>
 
+
     <!-- Content Section -->
     <section style="padding: 100px 0; background: #fff;">
         <div style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
             <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: #1d1d1f;">Professional. Prestigious. Permanent.</h2>
             <p style="font-size: 1.1rem; line-height: 1.6; color: #6e6e73; margin-bottom: 20px;">
-                Logo signs in metal and acrylic are the gold standard for corporate lobby signage, reception areas, 
-                and exterior building identification. Choose from brushed aluminum, stainless steel, brass, or multi-layered acrylic.
+                Logo signs are the gold standard for corporate lobby signage, reception areas, 
+                and exterior building identification. Whether you need sleek metal finishes, vibrant acrylics, or illuminated options,
+                we create custom logo signs that perfectly reflect your brand identity.
             </p>
             <p style="font-size: 1.1rem; line-height: 1.6; color: #6e6e73;">
                 Each logo is precision-cut using CNC or laser technology, then finished to your exact specifications. 
-                Optional LED backlighting can add an extra dimension of sophistication.
+                From brushed aluminum to polished stainless steel and multi-layered acrylic, we offer materials that ensure your brand makes a lasting impression.
             </p>
         </div>
     </section>
+        <!-- Product Gallery Section -->
+    <section style="padding: 80px 0; background: #f5f5f7;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="section-header">
+                <h2>Our Logo Signs Work</h2>
+                <p>Logo sign installations</p>
+            </div>
 
+            <div class="product-grid" style="gap: 30px; margin-top: 40px;">
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/1.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/2.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/3.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/4.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/5.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="product-card">
+                    <img src="{% static 'images/logo-signs/6.jpg' %}" alt="Logo Signs" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;">
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Products Section -->
     <section class="products-section" id="products">
         <div class="products-container">

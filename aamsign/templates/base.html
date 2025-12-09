@@ -48,34 +48,16 @@
                             <h4>Neon Collections</h4>
                             <ul>
                                 <li><a href="{% url 'custom_neon' %}">Custom Neon Words & Logos</a></li>
-                                <li><a href="{% url 'neon_lamps' %}">Desk & Counter Neon Lamps</a></li>
+                                <li><a href="{% url 'neon_lamps' %}">Standard Neon Signs</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Light Boxes</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-category">
-                            <h4>Display Solutions</h4>
-                            <ul>
-                                <li><a href="{% url 'slim_lightboxes' %}">Slim LED Light Boxes</a></li>
-                                <li><a href="{% url 'blade_lightboxes' %}">Double-Sided Blade</a></li>
-                                <li><a href="{% url 'fabric_lightboxes' %}">Fabric SEG Light Boxes</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <a href="{% url 'light_box' %}">Light Boxes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Logo Signs</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-category">
-                            <h4>Corporate Identity</h4>
-                            <ul>
-                                <li><a href="{% url 'logo_signs' %}">Metal / Acrylic Logos</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <a href="{% url 'logo_signs' %}">Logo Signs</a>
                 </li>
             </ul>
             <div class="nav-actions">
@@ -96,42 +78,72 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
+            <!-- Column 1: Company Info -->
+            <div class="footer-col company-info">
+                <h4>ASIA AMERICA MEDIA</h4>
+                <p>From signs to sales—we make your business shine!</p>
+                <p class="address">980 Roosevelt, Suite 110,<br>Irvine, CA92620</p>
+            </div>
+
+            <!-- Column 2: Navigation -->
             <div class="footer-col">
-                <h4>Shop and Learn</h4>
+                <h4>NAVIGATION</h4>
                 <ul>
-                    <li><a href="#">Store</a></li>
-                    <li><a href="#">Mac</a></li>
-                    <li><a href="#">iPad</a></li>
-                    <li><a href="#">iPhone</a></li>
+                    <li><a href="{% url 'index' %}">Shop All</a></li>
+                    <li><a href="{% url 'custom_neon' %}">Custom Neon Sign</a></li>
+                    <li><a href="{% url 'index' %}#products">Best Sellers</a></li>
                 </ul>
             </div>
+
+            <!-- Column 3: Help -->
             <div class="footer-col">
-                <h4>Account</h4>
+                <h4>HELP</h4>
                 <ul>
-                    <li><a href="#">Manage Your ID</a></li>
-                    <li><a href="#">Store Account</a></li>
-                    <li><a href="#">iCloud.com</a></li>
+                    <li><a href="#">Fonts/Product/Size Guide</a></li>
+                    <li><a href="#">Light Options</a></li>
+                    <li><a href="#">Style Guide</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">About us</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h4>Aamsign Store</h4>
-                <ul>
-                    <li><a href="#">Find a Store</a></li>
-                    <li><a href="#">Genius Bar</a></li>
-                    <li><a href="#">Today at Apple</a></li>
-                </ul>
+
+            <!-- Column 4: Newsletter -->
+            <div class="footer-col newsletter">
+                <h4>NEWSLETTER</h4>
+                <form action="#" method="post" class="newsletter-form">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
             </div>
-            <div class="footer-col">
-                <h4>About Aamsign</h4>
+
+            <!-- Column 5: Payment Service & Legal -->
+            <div class="footer-col payment-legal">
+                <h4>PAYMENT SERVICE</h4>
+                <div class="payment-icons">
+                    <!-- Placeholder for payment icons -->
+                </div>
+                
+                <h4 style="margin-top: 20px;">INTELLECTUAL PROPERTY RIGHTS</h4>
                 <ul>
-                    <li><a href="#">Newsroom</a></li>
-                    <li><a href="#">Career</a></li>
-                    <li><a href="#">Investors</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Refund policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
                 </ul>
+                
+                <div class="payment-methods" style="margin-top: 20px; display: flex; gap: 10px;">
+                     <!-- Simple text representation for now -->
+                     <span style="font-size: 1.5rem;">💳</span>
+                     <span style="font-size: 1.5rem;">🅿️</span>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Copyright © 2024 Aamsign Inc. All rights reserved.</p>
+            <p>© ASIA AMERICA MEDIA. Powered by Asia America Media</p>
         </div>
     </footer>
 

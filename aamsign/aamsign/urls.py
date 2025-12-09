@@ -23,9 +23,7 @@ urlpatterns = [
     path('neon/neon-lamps/', views.neon_lamps, name='neon_lamps'),
     
     # Light Boxes URLs
-    path('lightboxes/slim/', views.slim_lightboxes, name='slim_lightboxes'),
-    path('lightboxes/blade/', views.blade_lightboxes, name='blade_lightboxes'),
-    path('lightboxes/fabric/', views.fabric_lightboxes, name='fabric_lightboxes'),
+    path('lightboxes/light-box/', views.light_box, name='light_box'),
     
     # Logo Signs URLs
     path('logos/logo-signs/', views.logo_signs, name='logo_signs'),

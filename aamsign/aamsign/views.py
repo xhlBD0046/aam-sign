@@ -10,56 +10,62 @@ def design(request):
 
 def front_lit(request):
     try:
-        category = Category.objects.get(slug='front-lit')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
+    
     return render(request, 'illumination/front_lit.html', {'products': products})
+
 
 def back_lit(request):
     try:
-        category = Category.objects.get(slug='back-lit')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
+    
     return render(request, 'illumination/back_lit.html', {'products': products})
+
 
 def front_back_lit(request):
     try:
-        category = Category.objects.get(slug='front-back-lit')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
+    
     return render(request, 'illumination/front_back_lit.html', {'products': products})
+
 
 def open_face(request):
     try:
-        category = Category.objects.get(slug='open-face')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
     
     return render(request, 'illumination/open_face.html', {'products': products})
 
+
 def non_illuminated(request):
     try:
-        category = Category.objects.get(slug='non-illuminated')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
     
     return render(request, 'illumination/non_illuminated.html', {'products': products})
 
+
 def rgb_programmable(request):
     try:
-        category = Category.objects.get(slug='rgb-programmable')
+        category = Category.objects.get(slug='channel-letters')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
     
     return render(request, 'illumination/rgb_programmable.html', {'products': products})
-
-# LED Neon Signs views
 def custom_neon(request):
     try:
         category = Category.objects.get(slug='custom-neon')
@@ -71,7 +77,7 @@ def custom_neon(request):
 
 def neon_lamps(request):
     try:
-        category = Category.objects.get(slug='neon-lamps')
+        category = Category.objects.get(slug='Neon')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
@@ -79,32 +85,24 @@ def neon_lamps(request):
     return render(request, 'neon/neon_lamps.html', {'products': products})
 
 # Light Boxes views
-def slim_lightboxes(request):
+def light_box(request):
     try:
-        category = Category.objects.get(slug='slim-lightboxes')
-        products = Product.objects.filter(category=category, available=True)
-    except Category.DoesNotExist:
-        products = []
-    
-    return render(request, 'lightboxes/slim_lightboxes.html', {'products': products})
-
-def blade_lightboxes(request):
-    try:
+        # We can use a general 'lightbox' category or keep 'blade-lightboxes' slug if we don't want to change DB
+        # But user said "directly to light_box", implying a general page.
+        # Let's assume we might want to show all lightboxes or just keep the blade ones for now but under a general name.
+        # For now, I will keep querying 'blade-lightboxes' as the data exists, or 'lightbox' if I change data.
+        # The user didn't ask to change data, just the page.
+        # But wait, "Modify blade light box text content to be just a light box introduction".
+        # Let's query 'blade-lightboxes' for now to ensure products show up, or 'lightbox' if we consolidated.
+        # I'll stick to 'blade-lightboxes' slug for safety unless I change data, BUT I should probably check if I should change the slug.
+        # The user said "Modify blade light box html and views and url directly to light_box".
+        # I will use 'blade-lightboxes' slug for the query to ensure products appear, but the view name is light_box.
         category = Category.objects.get(slug='blade-lightboxes')
         products = Product.objects.filter(category=category, available=True)
     except Category.DoesNotExist:
         products = []
     
-    return render(request, 'lightboxes/blade_lightboxes.html', {'products': products})
-
-def fabric_lightboxes(request):
-    try:
-        category = Category.objects.get(slug='fabric-lightboxes')
-        products = Product.objects.filter(category=category, available=True)
-    except Category.DoesNotExist:
-        products = []
-    
-    return render(request, 'lightboxes/fabric_lightboxes.html', {'products': products})
+    return render(request, 'lightboxes/light_box.html', {'products': products})
 
 # Logo Signs views
 def logo_signs(request):
